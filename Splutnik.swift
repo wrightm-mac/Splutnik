@@ -36,6 +36,7 @@ let serverVersion = 0.8
 let serverPort: UInt16 = 2108
 let maximumConnections: Int32 = 16
 let readBufferSize = 64 * 1024
+let  parseParameters = true                     // Parameter parsing can be expensive.
 
 
 public struct Console {
@@ -378,6 +379,8 @@ public class WebSocket: ServerSocket {
 
         var paramString: String = ""
 
+        var parameters = [String:String]()
+
         var version: String = ""
 
         var headers = [String:String]()
@@ -422,8 +425,18 @@ public class WebSocket: ServerSocket {
                                         uri = (pathParts.count > 0) ? pathParts[0] : ""
                                         if pathParts.count > 1 {
                                             paramString = pathParts[1]
+                                            if parseParameters {
+                                                for parameter in paramString.components(separatedBy: "&") {
+                                                    let parameterParts = parameter.components(separatedBy: "=")
+                                                    if parameterParts.count == 2 {
+                                                        parameters[parameterParts[0]] = parameterParts[1]
+                                                    }
+                                                    else {
+                                                        parameters[parameterParts[0]] = ""
+                                                    }
+                                                }
+                                            }
                                         }
-                                        Console.trace("--------> [path=\(path)][uri=\(uri)][paramString=\(paramString)]")
                                         version = chunks[2]
                                     }
                                 }
@@ -456,6 +469,9 @@ public class WebSocket: ServerSocket {
             }
             
             Console.trace("request\t[\(method.rawValue)\(uri)]")
+            for (name, value) in parameters {
+                Console.trace("parameter\t[name=\(name)][value=\(value)]")
+            }
             for (name, value) in headers {
                 Console.trace("header\t[name=\(name)][value=\(value)]")
             }
