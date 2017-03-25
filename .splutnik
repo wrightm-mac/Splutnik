@@ -1,0 +1,11 @@
+# map requests for a file to a different file...
+hello.*=index.html
+
+#redirects...
+redirect:
+ars=http://arstechnica.com
+bbc=http://bbc.co.uk
+slash=http://slashdot.org
+
+#forwards...
+go.html=index.html
