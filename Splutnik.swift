@@ -32,7 +32,7 @@ import Foundation
 
 
 let serverName = "Splutnik"
-let serverVersion = 0.7
+let serverVersion = 0.8
 let serverPort: UInt16 = 2108
 let maximumConnections: Int32 = 16
 let readBufferSize = 64 * 1024
@@ -373,9 +373,15 @@ public class WebSocket: ServerSocket {
         var socket: Int32
         
         var method: Method = .Unknown
+
         var uri: String = ""
+
+        var paramString: String = ""
+
         var version: String = ""
+
         var headers = [String:String]()
+
         var body: String = ""
 
         init(socket: Int32) {
@@ -411,7 +417,13 @@ public class WebSocket: ServerSocket {
                                         if let method = Method(rawValue: chunks[0]) {
                                             self.method = method
                                         }
-                                        self.uri = chunks[1]
+                                        let path = chunks[1]
+                                        let pathParts = path.components(separatedBy: "?")
+                                        self.uri = (pathParts.count > 0) ? pathParts[0] : ""
+                                        if pathParts.count > 1 {
+                                            self.paramString = pathParts[1]
+                                        }
+                                        Console.trace("--------> [path=\(path)][uri=\(uri)][paramString=\(paramString)]")
                                         self.version = chunks[2]
                                     }
                                 }
