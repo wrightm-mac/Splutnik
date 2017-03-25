@@ -104,7 +104,7 @@ public class FileReader {
     private let basePath: URL
 
     var path: String {
-        return self.basePath.path
+        return basePath.path
     }
     
     init() {
@@ -112,8 +112,8 @@ public class FileReader {
             // Assume that all files to be served are in the User's 'Documents/WebServer'
             // directory...
             var homeDirectoryForCurrentUser = try FileManager().url(for: .documentDirectory, in: .userDomainMask,appropriateFor: nil, create: false) 
-            homeDirectoryForCurrentUser.appendPathComponent(self.serverDirectory, isDirectory: true)
-            self.basePath = homeDirectoryForCurrentUser
+            homeDirectoryForCurrentUser.appendPathComponent(serverDirectory, isDirectory: true)
+            basePath = homeDirectoryForCurrentUser
         }
         catch {
             // Default to wherever - need to fix this to a sensible default...
@@ -123,7 +123,7 @@ public class FileReader {
         
     func getFileContents(relativePath: String) -> String? {
         do {
-            return try String(contentsOfFile: "\(self.basePath.path)\(relativePath)", encoding: .utf8)
+            return try String(contentsOfFile: "\(basePath.path)\(relativePath)", encoding: .utf8)
         }
         catch let error {
             Console.error("error: \(error)")
@@ -151,7 +151,7 @@ public class ServerConfiguration {
     
     init() {
         var sectionName = "default"
-        self.sections = [sectionName:[String:String]()]
+        sections = [sectionName:[String:String]()]
         
         if let config = fileReader.getFileContents(relativePath: ".splutnik") {
             let lines = config.characters.split{$0 == "\n"}.map(String.init)
@@ -161,15 +161,15 @@ public class ServerConfiguration {
                 if !((trimmedLine.characters.count == 0) || trimmedLine.hasPrefix(commentPrefix)) {
                     if line.hasSuffix(sectionNameSuffix) {
                         sectionName = trimmedLine.trim(charactersIn: " :")
-                        if self.sections[sectionName] == nil {
-                            self.sections[sectionName] = [String:String]()
+                        if sections[sectionName] == nil {
+                           sections[sectionName] = [String:String]()
                         }
                     }
                     else {
                         let lineParts = trimmedLine.characters.split{$0 == "="}.map(String.init)
                         let key = lineParts[0].trim()
                         let value = (lineParts.count > 1) ? lineParts[1].trim() : ""
-                        self.sections[sectionName]![key] = value
+                        sections[sectionName]![key] = value
                     }
                 }
             }
@@ -191,7 +191,7 @@ public class ServerConfiguration {
         for sectionKey in sections.keys {
             Console.debug("\(sectionKey):")
             
-            let sectionPart = self.sections[sectionKey]!
+            let sectionPart = sections[sectionKey]!
             for itemKey in sectionPart.keys {
                 let itemValue = sectionPart[itemKey] ?? ""
                 Console.debug("\t\(itemKey)=\(itemValue)")
@@ -205,7 +205,7 @@ public class ServerConfiguration {
     }
     
     func map(sectionName: String, function: (_: String, _: String) -> Bool) {
-        if let section = self.sections[sectionName] {
+        if let section = sections[sectionName] {
             for key in section.keys {
                 if !function(key, section[key]!) {
                     break
@@ -265,7 +265,7 @@ public class ServerSocket {
         Console.debug("ServerSocket.init [port=\(port)]")
         
         self.port = port
-        self.acceptConnections = false
+        acceptConnections = false
     }
 
     func handleRequest(socket: Int32, ip: String?, port: Int) {
@@ -278,7 +278,7 @@ public class ServerSocket {
     func start() throws {
         var hints = addrinfo(ai_flags: AI_PASSIVE, ai_family: AF_UNSPEC, ai_socktype: SOCK_STREAM, ai_protocol: 0, ai_addrlen: 0, ai_canonname: nil, ai_addr: nil, ai_next: nil)
         var servinfo: UnsafeMutablePointer<addrinfo>? = nil
-        var status = getaddrinfo(nil, String(self.port), &hints, &servinfo)
+        var status = getaddrinfo(nil, String(port), &hints, &servinfo)
         if status != 0 {
             throw SocketError.Server("create address failure")
         }
@@ -313,14 +313,14 @@ public class ServerSocket {
             attributes: [.concurrent]
         )
 
-        self.acceptConnections = true
-        while self.acceptConnections {
+        acceptConnections = true
+        while acceptConnections {
             var connectedAddrInfo = sockaddr(sa_len: 0, sa_family: 0, sa_data: (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
             var connectedAddrInfoLength = socklen_t(MemoryLayout<sockaddr>.size)
             
             let clientSocket = accept(socketDescriptor, &connectedAddrInfo, &connectedAddrInfoLength)
             if clientSocket == -1 {
-                self.printStatusError(message: "accept")
+                printStatusError(message: "accept")
                 continue
             }
 
@@ -332,7 +332,7 @@ public class ServerSocket {
     }
 
     func stop() {
-        self.acceptConnections = false
+        acceptConnections = false
     }
 
     private func getSocketDescription(addr: UnsafePointer<sockaddr>) -> (String?, String?) {
@@ -419,12 +419,12 @@ public class WebSocket: ServerSocket {
                                         }
                                         let path = chunks[1]
                                         let pathParts = path.components(separatedBy: "?")
-                                        self.uri = (pathParts.count > 0) ? pathParts[0] : ""
+                                        uri = (pathParts.count > 0) ? pathParts[0] : ""
                                         if pathParts.count > 1 {
-                                            self.paramString = pathParts[1]
+                                            paramString = pathParts[1]
                                         }
                                         Console.trace("--------> [path=\(path)][uri=\(uri)][paramString=\(paramString)]")
-                                        self.version = chunks[2]
+                                        version = chunks[2]
                                     }
                                 }
                                 else {
@@ -450,12 +450,12 @@ public class WebSocket: ServerSocket {
                             }
                         }
                         else {
-                            self.body += String(character)
+                            body += String(character)
                         }
                 }
             }
             
-            Console.trace("request\t[\(self.method.rawValue)\(self.uri)]")
+            Console.trace("request\t[\(method.rawValue)\(uri)]")
             for (name, value) in headers {
                 Console.trace("header\t[name=\(name)][value=\(value)]")
             }
@@ -466,11 +466,11 @@ public class WebSocket: ServerSocket {
         }
         
         func debug() {
-            print("\(self.method.rawValue) \(self.uri) \(self.version)")
+            print("\(method.rawValue) \(uri) \(version)")
             for key in self.headers.keys {
-                print("header [name=\(key)][value=\(self.headers[key]!)]")
+                print("header [name=\(key)][value=\(headers[key]!)]")
             }
-            print("body [\(self.body)]")
+            print("body [\(body)]")
         }
     }
 
@@ -503,7 +503,7 @@ public class WebSocket: ServerSocket {
 
         private let clientRequest: ClientRequest 
         var request: ClientRequest {
-            return self.clientRequest
+            return clientRequest
         }
         
         // Headers that are sent as part of a response - note that all responses
@@ -521,14 +521,14 @@ public class WebSocket: ServerSocket {
         private var body = ""
         
         init(request: ClientRequest) {
-            self.clientRequest = request
+            clientRequest = request
             
-            self.dateFormatter = DateFormatter()
-            self.dateFormatter.dateFormat = self.rfc7231Date
+            dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = self.rfc7231Date
         }
         
         mutating func setHeader(header: String, value: String) {
-            self.headers[header] = value
+            headers[header] = value
         }
         
         mutating func addBody(body: String) {
@@ -540,7 +540,7 @@ public class WebSocket: ServerSocket {
         }
 
         private func addHeader(name: String, value: String, appendTo: String) -> String {
-            return self.addResponse(line: "\(name): \(value)", appendTo: appendTo)
+            return addResponse(line: "\(name): \(value)", appendTo: appendTo)
         }
         
         func send(responseCode: ResponseCode, body: String? = nil) {
@@ -559,15 +559,15 @@ public class WebSocket: ServerSocket {
                 replyBody = self.body
             }
             
-            reply = self.addHeader(name: "Date", value: dateFormatter.string(from: Date()), appendTo: reply)
-            reply = self.addHeader(name: "Content-Length", value: String(replyBody.utf8.count), appendTo: reply)
+            reply = addHeader(name: "Date", value: dateFormatter.string(from: Date()), appendTo: reply)
+            reply = addHeader(name: "Content-Length", value: String(replyBody.utf8.count), appendTo: reply)
             
             if replyBody.characters.count > 0 {
-                reply += self.lineEnding
+                reply += lineEnding
                 reply += replyBody
             }
             
-            write(self.request.socket, reply, reply.utf8.count)
+            write(request.socket, reply, reply.utf8.count)
         }
     }
 
