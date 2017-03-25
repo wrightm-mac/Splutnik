@@ -36,7 +36,7 @@ let serverVersion = 0.8
 let serverPort: UInt16 = 2108
 let maximumConnections: Int32 = 16
 let readBufferSize = 64 * 1024
-let  parseParameters = true                     // Parameter parsing can be expensive.
+let parseParameters = true                     // Parameter parsing can be expensive.
 let serverDirectory = "WebServer/"              // Location of served pages (in ~/Documents).
 
 
