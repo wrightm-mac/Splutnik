@@ -37,6 +37,7 @@ let serverPort: UInt16 = 2108
 let maximumConnections: Int32 = 16
 let readBufferSize = 64 * 1024
 let  parseParameters = true                     // Parameter parsing can be expensive.
+let serverDirectory = "WebServer/"              // Location of served pages (in ~/Documents).
 
 
 public struct Console {
@@ -101,7 +102,6 @@ func throwingLock(_ object: Any, closure: @escaping (() throws -> Void)) throws 
 public class FileReader {
     private let myLock = "file-reader-loc"
 
-    private let serverDirectory = "WebServer/"
     private let basePath: URL
 
     var path: String {
