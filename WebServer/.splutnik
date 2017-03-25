@@ -1,0 +1,35 @@
+# Splutnik Web Server Configuration
+
+# Any extensions not explicitly given here will be served as 'text/html'
+# content-type.
+# Separate multiple extensions with a comma. eg:
+#    .jpeg/.jpg=image
+content-type:
+  .bmp=image/bmp
+  .gif=image/gif
+  .jpg,.jpeg=image/jpeg
+  .png=image/png
+  .js=application/javascript
+  .json=text/json
+
+
+# Map basic redirection & forwarding.
+#    <x>=<y> where <x> is the incoming request, and <y> is the page to resolve to.
+#      <x> is a regular expression - note that all requests have a root '/'.
+#      <y> is the (server-root-relative or external) path to the served request.
+#    Note that sections are *not* checked in sequential order - left-side patterns
+#    must be a unique match or there may be unexpected results.
+
+redirect:
+  /ars=http://arstechnica.com
+  /bbc=http://bbc.co.uk
+  /slash=http://slashdot.org
+
+forward:
+  /bang.asp=Pages/Index.html
+  /go.html=Pages/Index.html
+  /yada.*=Pages/Index.html
+
+dynamic:
+# Not yet used!
+  /*.sws=Scripts/$PATH.swift
