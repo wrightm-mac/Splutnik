@@ -1,8 +1,8 @@
 {
     "Server": {
-        "Identifier": "Splutnik One",
+        "ServerName": "Splutnik One",
         "Port": 2108,
-        "Timeout": 16.89,
+        "MaximumConnections": 16.89,
         "DocumentDirectory": "~/Documents/WebServer"
     },
     "MimeTypes": {

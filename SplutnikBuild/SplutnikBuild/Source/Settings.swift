@@ -16,10 +16,27 @@ open class Settings {
     public private(set) var json: Json
     
     
+    // MARK:    Configuration...
+    
+    public let serverName: String
+    
+    public let serverPort: UInt16
+    
+    public let maximumConnections: Int
+    
+    public let documentDirectory: String
+    
+    
     // MARK:    Initialisers...
     
     public init(filename: String) {
         json = Json(filename: filename)
+        
+        let serverSettings = json["Server"].dictionary
+        serverName = serverSettings["ServerName"].string
+        serverPort = UInt16(serverSettings["ServerPort"].int)
+        maximumConnections = serverSettings["MaximumConnections"].int
+        documentDirectory = serverSettings["DocumentDirectory"].string
     }
     
     

@@ -14,6 +14,12 @@
 		245372AB1E967C2F004C6CDE /* SettingsMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245372AA1E967C2F004C6CDE /* SettingsMatch.swift */; };
 		245372B01E9681BB004C6CDE /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245372AF1E9681BB004C6CDE /* Console.swift */; };
 		245372B31E968A0A004C6CDE /* FileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245372B21E968A0A004C6CDE /* FileReader.swift */; };
+		245372B61E968E25004C6CDE /* ServerSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245372B51E968E25004C6CDE /* ServerSocket.swift */; };
+		245372B81E968E6C004C6CDE /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245372B71E968E6C004C6CDE /* WebSocket.swift */; };
+		245372BA1E968EB1004C6CDE /* SocketError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245372B91E968EB1004C6CDE /* SocketError.swift */; };
+		245372BC1E9692CB004C6CDE /* ClientRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245372BB1E9692CB004C6CDE /* ClientRequest.swift */; };
+		245372BE1E969385004C6CDE /* ClientResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245372BD1E969385004C6CDE /* ClientResponse.swift */; };
+		245372C11E9695A4004C6CDE /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245372C01E9695A4004C6CDE /* StringExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,6 +44,12 @@
 		245372AD1E967C6F004C6CDE /* Splutnik.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Splutnik.json; sourceTree = "<group>"; };
 		245372AF1E9681BB004C6CDE /* Console.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Console.swift; path = Source/Console.swift; sourceTree = "<group>"; };
 		245372B21E968A0A004C6CDE /* FileReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileReader.swift; path = Source/FileReader.swift; sourceTree = "<group>"; };
+		245372B51E968E25004C6CDE /* ServerSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServerSocket.swift; path = Source/ServerSocket.swift; sourceTree = "<group>"; };
+		245372B71E968E6C004C6CDE /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocket.swift; path = Source/WebSocket.swift; sourceTree = "<group>"; };
+		245372B91E968EB1004C6CDE /* SocketError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SocketError.swift; path = Source/SocketError.swift; sourceTree = "<group>"; };
+		245372BB1E9692CB004C6CDE /* ClientRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ClientRequest.swift; path = Source/ClientRequest.swift; sourceTree = "<group>"; };
+		245372BD1E969385004C6CDE /* ClientResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ClientResponse.swift; path = Source/ClientResponse.swift; sourceTree = "<group>"; };
+		245372C01E9695A4004C6CDE /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringExtensions.swift; path = Source/StringExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,10 +92,12 @@
 		245372A11E967B99004C6CDE /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				245372BF1E96958F004C6CDE /* Extensions */,
 				245372AE1E9681A1004C6CDE /* Console */,
 				245372B11E9689EB004C6CDE /* Files */,
 				245372A31E967BAE004C6CDE /* Json */,
 				245372A21E967BA4004C6CDE /* Settings */,
+				245372B41E968DF5004C6CDE /* Sockets */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -128,6 +142,26 @@
 				245372B21E968A0A004C6CDE /* FileReader.swift */,
 			);
 			name = Files;
+			sourceTree = "<group>";
+		};
+		245372B41E968DF5004C6CDE /* Sockets */ = {
+			isa = PBXGroup;
+			children = (
+				245372BB1E9692CB004C6CDE /* ClientRequest.swift */,
+				245372BD1E969385004C6CDE /* ClientResponse.swift */,
+				245372B51E968E25004C6CDE /* ServerSocket.swift */,
+				245372B71E968E6C004C6CDE /* WebSocket.swift */,
+				245372B91E968EB1004C6CDE /* SocketError.swift */,
+			);
+			name = Sockets;
+			sourceTree = "<group>";
+		};
+		245372BF1E96958F004C6CDE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				245372C01E9695A4004C6CDE /* StringExtensions.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -190,11 +224,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				2453729B1E967B84004C6CDE /* main.swift in Sources */,
+				245372BE1E969385004C6CDE /* ClientResponse.swift in Sources */,
+				245372BA1E968EB1004C6CDE /* SocketError.swift in Sources */,
 				245372B01E9681BB004C6CDE /* Console.swift in Sources */,
 				245372B31E968A0A004C6CDE /* FileReader.swift in Sources */,
 				245372A71E967BF5004C6CDE /* JsonElement.swift in Sources */,
 				245372A91E967C1A004C6CDE /* Settings.swift in Sources */,
+				245372B61E968E25004C6CDE /* ServerSocket.swift in Sources */,
+				245372BC1E9692CB004C6CDE /* ClientRequest.swift in Sources */,
 				245372A51E967BDF004C6CDE /* Json.swift in Sources */,
+				245372B81E968E6C004C6CDE /* WebSocket.swift in Sources */,
+				245372C11E9695A4004C6CDE /* StringExtensions.swift in Sources */,
 				245372AB1E967C2F004C6CDE /* SettingsMatch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
