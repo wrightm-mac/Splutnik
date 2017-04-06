@@ -1,0 +1,23 @@
+{
+    "Server": {
+        "Identifier": "Splutnik One",
+        "Port": 2108,
+        "Timeout": 16.89,
+        "DocumentDirectory": "~/Documents/WebServer"
+    },
+    "MimeTypes": {
+        "*.html": "text/html",
+        "*.jpeg": "image"
+    },
+    "Forwards": {
+        "Dir": "Directory.html",
+        "index": "Index.html",
+        "Test": "Test.html"
+    },
+    "Redirects": {
+        "Ars": "http://arstechnica.com",
+        "BBC": "http://bbc.co.uk",
+        "Hello.*": "http://helloworld.net",
+        "Slash": "http://slashdot.org"
+    }
+}
