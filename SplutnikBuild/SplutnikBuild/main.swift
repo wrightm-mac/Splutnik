@@ -14,8 +14,8 @@ let settingsFilePath = "/Users/mwright//Development/Xcode/Splutnik/SplutnikBuild
 let settings = Settings(filename: settingsFilePath)
 
 if let match = settings.match(sectionName: "Redirects", query: "Hello.abcpq") {
-    print("*** [match=\(match.string)]")
+    Console.debug("*** [match=\(match.string)]")
 }
 else {
-    print("*** no match")
+    Console.debug("*** no match")
 }
