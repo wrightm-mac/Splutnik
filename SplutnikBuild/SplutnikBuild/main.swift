@@ -8,8 +8,9 @@
 
 import Foundation
 
-let settingsFilePath = "\(FileManager.default.currentDirectoryPath)/Splutnik.json"
-
+//let settingsFilePath = "\(FileManager.default.currentDirectoryPath)/Splutnik.json"
+//let settingsFilePath = "\(FileManager.default.homeDirectoryForCurrentUser)Development/Xcode/Splutnik/SplutnikBuild/SplutnikBuild/Splutnik.json"
+let settingsFilePath = "/Users/mwright//Development/Xcode/Splutnik/SplutnikBuild/SplutnikBuild/Splutnik.json"
 let settings = Settings(filename: settingsFilePath)
 
 if let match = settings.match(sectionName: "Redirects", query: "Hello.abcpq") {
